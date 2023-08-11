@@ -1,3 +1,5 @@
+<?php include "sendmail.php"; ?>
+
 <!doctype html>
 <html lang="en">
 
@@ -152,7 +154,7 @@
                                     </a></li>
                                 </ul>
                             </div>
-                            <a href="#" class="btn hero-btn">get Started <i class="fa fa-arrow-right"></i></a>
+                            <a href="#Services" class="btn hero-btn">get Started <i class="fa fa-arrow-right"></i></a>
                             <a href="https://www.youtube.com/watch?v=iogabydg2y0" class="video-btn video-popup"><i class="fa fa-play"></i></a>
                         </div>
                     </div>
@@ -292,7 +294,7 @@
                             <li><a href="#"><i class="fas fa-check"></i>Product Marketing</a></li>
                             <li><a href="#"><i class="fas fa-check"></i>User Research</a></li>
                         </ul>
-                        <a href="#" class="btn about-btn">Contact Us <i class="fa fa-arrow-right"></i></a>
+                        <a href="#Contact" class="btn about-btn">Contact Us <i class="fa fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -388,8 +390,8 @@
                 </div>
                 <div class="col-lg-7 text-right">
                     <div class="portfolio-btn-area">
-                        <a href="#" class="btn portfolio-btn">View more <i class="fa fa-arrow-right"></i></a>
-                        <a href="#" class="portfolio-btn-2">Let’s Talk <i class="fa fa-arrow-right"></i></a>
+                        <a href="#portfolio" class="btn portfolio-btn">View more <i class="fa fa-arrow-right"></i></a>
+                        <a href="#portfolio" class="portfolio-btn-2">Let’s Talk <i class="fa fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -464,8 +466,8 @@
                         <span><img src="assets/images/cta-text.png" alt=""></span>
                         <h1>Have Any 
                             Creative Project</h1>
-                        <p>We denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure</p>
-                        <a href="#" class="btn cta-btn">meet with us <i class="fa fa-arrow-right"></i></a>
+                        <p>Bring your dream projects into reality with our vast knowledge in web design and development. We will wow you!</p>
+                        <a href="#About" class="btn cta-btn">meet with us <i class="fa fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -581,7 +583,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 text-right">
-                    <a href="#" class="btn counter-btn">get started <i class="fa fa-arrow-right"></i></a>
+                    <a href="#Services" class="btn counter-btn">get started <i class="fa fa-arrow-right"></i></a>
                 </div>
             </div>
             <div class="row">
@@ -746,7 +748,7 @@
                     </div>
                 </div>
                 <div class="col-lg-8 text-right">
-                    <a href="#" class="btn blog-btn">view all news <i class="fa fa-arrow-right"></i></a>
+                    <a href="#Blog" class="btn blog-btn">view all news <i class="fa fa-arrow-right"></i></a>
                 </div>
             </div>
             <div class="row">
@@ -808,26 +810,28 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="contact-form-area">
-                        <form action="#">
+                        <form method=”POST” enctype=”text/plain” name=”EmailForm” id="EmailForm">
+                            <?php echo((!empty($errorMessage)) ? $errorMessage : '') ?>
+
                             <div class="single-contact-field">
-                                <input type="text" placeholder="Your Name">
+                                <input type="text" placeholder="Your Name" name="name">
                                 <span class="far fa-user"></span>
                             </div>
                             
                             <div class="single-contact-field">
-                                <input type="email" placeholder="Your email">
+                                <input type="email" placeholder="Your email" name="email">
                                 <span class="fas fa-envelope-open-text"></span>
                             </div>
                             
                             <div class="single-contact-field">
-                                <input type="text" placeholder="Your phone">
+                                <input type="text" placeholder="Your phone" name="phone">
                                 <span class="fas fa-phone"></span>
                             </div>
                             
                             <div class="single-contact-field textarea">
-                                <textarea name="#" id="#" cols="30" rows="10" placeholder="Your Message"></textarea>
+                                <textarea name="message" id="#" cols="30" rows="10" placeholder="Your Message"></textarea>
                                 <span class="fas fa-pencil-alt"></span>
-                                <a href="#" class="btn contact-btn">send message <i class="fa fa-arrow-right"></i></a>
+                                <button type="submit" class="btn contact-btn">send message <i class="fa fa-arrow-right"></i></button>
                             </div>
                         </form>
                     </div>
@@ -909,6 +913,51 @@
 
     <!--====== Main js ======-->
     <script src="assets/js/main.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
+    <script>
+
+
+        const constraints = {
+            name: {
+                presence: { allowEmpty: false }
+            },
+            email: {
+                presence: { allowEmpty: false },
+                email: true
+            },
+            phone: {
+                presence: { allowEmpty: false },
+            },
+            message: {
+                presence: { allowEmpty: false }
+            }
+        };
+
+        const form = document.getElementById('EmailForm');
+        form.addEventListener('submit', function (event) {
+
+            const formValues = {
+                name: form.elements.name.value,
+                email: form.elements.email.value,
+                phone: form.elements.phone.value,
+                message: form.elements.message.value
+            };
+
+
+            const errors = validate(formValues, constraints);
+            if (errors) {
+                event.preventDefault();
+                const errorMessage = Object
+                    .values(errors)
+                    .map(function (fieldValues) {
+                        return fieldValues.join(', ')
+                    })
+                    .join("\n");
+
+                alert(errorMessage);
+            }
+        }, false);
+    </script>
 
 </body>
 
